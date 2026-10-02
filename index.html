@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e8a8f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="English Word Trainer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>English Word Trainer – 英単語トレーナー</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d2b2e;--card:#fff;--mut:#6b7b7e;--ac:#0e8a8f;--bd:#d9e2e2;--ok:#2e9e5b;--no:#d1493f;--gold:#e8a317;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a1b;--fg:#e8f0f0;--card:#1b2628;--mut:#93a5a8;--ac:#3cc0c5;--bd:#2c3b3d}}
+:root[data-theme="dark"]{--bg:#121a1b;--fg:#e8f0f0;--card:#1b2628;--mut:#93a5a8;--ac:#3cc0c5;--bd:#2c3b3d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.4 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Yu Gothic",sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:4px 0 10px;color:var(--ac)}
+#hd{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px 14px;margin-bottom:12px}
+.top{display:flex;justify-content:space-between;font-weight:600;font-size:15px}
+.bar{height:10px;border-radius:6px;background:var(--bd);margin:8px 0;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--gold));transition:width .4s}
+nav{display:flex;gap:6px;margin-bottom:12px}
+#gs{flex:1;min-width:0;font-weight:600;padding:8px 10px;font-size:16px}
+.b{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:8px 12px;border-radius:10px;cursor:pointer}
+.b:disabled{opacity:.4;cursor:default}.b.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.b.no{background:var(--no);color:#fff;border-color:var(--no)}
+select{font:inherit;padding:5px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--fg)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.sc{color:var(--mut);font-size:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.big{font-size:34px;text-align:center;margin:24px 0;font-weight:600;word-break:break-word}
+.q{font-size:22px;text-align:center;margin:16px 0}
+.word{font-size:28px;letter-spacing:5px;text-align:center;margin:12px 0;font-weight:600;word-break:break-all}
+.keys{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.keys button{width:34px;height:38px;padding:0}
+.opts{display:flex;flex-direction:column;gap:8px}.opts .b{text-align:left;font-size:17px;padding:12px}
+.msg{text-align:center;min-height:26px;margin:10px 0;font-weight:600}
+.row{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mc{min-height:64px;font-size:15px;padding:4px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--fg);cursor:pointer;font-family:inherit;word-break:break-word}
+.mc.dn{background:var(--ac);color:transparent}.mc.done{background:var(--ok);color:#fff;border-color:var(--ok)}
+.gm{font-size:14px;color:var(--mut);text-align:center}
+input,textarea{font:inherit;width:100%;padding:8px;margin:0 0 8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg)}textarea{min-height:70px}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:14px}
+#ts{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,80px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:20px;opacity:0;transition:.3s;font-weight:600;z-index:9}#ts.show{transform:translate(-50%,0);opacity:1}
+.zone{min-height:54px;border:2px dashed var(--bd);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.t{padding:6px 10px}
+.xg{display:grid;gap:2px;margin:10px auto}.xc{position:relative;aspect-ratio:1;border:1px solid var(--fg);background:var(--card)}.xc i{position:absolute;top:0;left:2px;font-size:9px;font-style:normal;color:var(--mut);pointer-events:none}.xc input{width:100%;height:100%;border:0;background:transparent;text-align:center;text-transform:uppercase;font-weight:700;font-size:clamp(12px,4vw,20px);padding:0;margin:0;color:var(--fg)}.xc input.bad{color:var(--no)}.xe{aspect-ratio:1}
+.ar{position:relative;height:320px;overflow:hidden;border:1px solid var(--bd);border-bottom:3px solid var(--no);border-radius:12px;background:var(--bg)}.fw{position:absolute;padding:4px 9px;border-radius:10px;background:var(--ac);color:#fff;font-size:14px;white-space:nowrap}.ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:color-mix(in srgb,var(--card) 85%,transparent);z-index:2}
+</style></head><body><main>
+<h1>English Word Trainer · 英単語</h1>
+<div id="hd"></div>
+<nav id="nav"></nav>
+<div id="app" class="card"></div>
+</main><div id="ts"></div>
+<script>
+/* 150 A2 words, 10 per set: word=日本語 */
+const RAW=`arrive=到着する;borrow=借りる;build=建てる;carry=運ぶ;catch=捕まえる;choose=選ぶ;collect=集める;decide=決める;describe=描写する;enjoy=楽しむ;explain=説明する;forget=忘れる;hope=望む;invite=招待する;join=参加する;lend=貸す;lose=失う;manage=なんとかやる;mean=意味する;miss=逃す;offer=申し出る;order=注文する;pay=払う;plan=計画する;prefer=より好む;promise=約束する;refuse=断る;remember=覚えている;repair=修理する;save=節約する;share=分け合う;stay=滞在する;suggest=提案する;travel=旅行する;wait=待つ;wear=身につける;worry=心配する;improve=上達する;return=戻る;realize=気づく;accident=事故;address=住所;advice=助言;airport=空港;appointment=予約;bridge=橋;building=建物;business=商売;chance=機会;customer=顧客;danger=危険;direction=方向;discount=割引;dream=夢;environment=環境;experience=経験;factory=工場;farm=農場;gift=贈り物;guest=客;habit=習慣;health=健康;holiday=休日;island=島;journey=旅;kitchen=台所;lesson=授業;luggage=荷物;manager=管理者;map=地図;meal=食事;message=伝言;neighbour=隣人;receipt=領収書;price=値段;problem=問題;reason=理由;schedule=予定;result=結果;traffic=交通;wallet=財布;weather=天気;shelf=棚;ceiling=天井;coast=海岸;crowd=群衆;fear=恐怖;knowledge=知識;salary=給料;member=会員;afraid=怖がって;angry=怒った;awful=ひどい;bored=退屈した;busy=忙しい;careful=注意深い;cheap=安い;clever=賢い;comfortable=快適な;crowded=混雑した;dangerous=危険な;delicious=おいしい;difficult=難しい;dirty=汚い;empty=空の;excited=わくわくした;expensive=高価な;famous=有名な;fresh=新鮮な;friendly=親しみやすい;healthy=健康的な;helpful=助けになる;honest=正直な;hungry=空腹の;important=重要な;interesting=面白い;lonely=孤独な;polite=礼儀正しい;quiet=静かな;ready=準備ができた;serious=真剣な;strange=奇妙な;tired=疲れた;useful=役に立つ;wrong=間違った;almost=ほとんど;already=すでに;anyway=とにかく;carefully=注意深く;certainly=確かに;especially=特に;exactly=正確に;finally=ついに;quickly=素早く;recently=最近;seldom=めったに〜ない;suddenly=突然;usually=たいてい;whenever=〜するときはいつでも;although=〜だけれども;however=しかしながら;instead=代わりに;maybe=たぶん;perhaps=もしかすると;during=〜の間に;among=〜の中で;through=〜を通って;without=〜なしで;against=〜に反対して;towards=〜の方へ`;
+const BASE=RAW.split(";").map((p,i)=>{const[w,jp]=p.split("=");return{w,jp,c:(i/10|0)+1}});
+
+/* STORAGE */
+const ld=(k,d)=>{try{return Object.assign(d,JSON.parse(localStorage.getItem(k)||"{}"))}catch(e){return d}};
+const sv=(k,o)=>{try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}};
+let G=ld("ewt",{xp:0,corr:0,best:0}),PG=ld("ewt_pg",{st:{},kn:{}}),MY=ld("ewt_my",{l:[]});
+let W=[],ch="0",dir="ej",combo=0,mm="";
+const rebuild=()=>{W=[...BASE,...MY.l.map(x=>({w:x.w,jp:x.jp,s:x.s,c:0,my:1}))]};
+const $=id=>document.getElementById(id),app=$("app"),h=s=>app.innerHTML=s;
+const esc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const say=w=>{try{const u=new SpeechSynthesisUtterance(w);u.lang="en-US";u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
+function toast(m){const t=$("ts");t.textContent=m;t.classList.add("show");clearTimeout(toast.i);toast.i=setTimeout(()=>t.classList.remove("show"),1800)}
+
+let RUN=0;const later=(f,ms)=>{const r=RUN;setTimeout(()=>{if(r==RUN)f()},ms)};
+/* XP + LEVELS */
+const lvf=(x,b=100,s=50)=>{let L=1,c=b;while(x>=c){x-=c;L++;c=b+s*(L-1)}return[L,x,c]};
+function hdr(){const[L,x,c]=lvf(G.xp);$("hd").innerHTML=`<div class="top"><span>Level ${L} レベル</span><span>🔥 ×${combo}</span><span>${G.xp} XP</span></div><div class="bar"><i style="width:${x/c*100}%"></i></div><div class="sc" style="margin:0"><span>✓ ${G.corr} correct</span><span>Best combo ${G.best}</span></div>`}
+function rec(w,ok){const t=PG.st[w]||(PG.st[w]={c:0,w:0,s:0});if(ok){t.c++;t.s++}else{t.w++;t.s=0}sv("ewt_pg",PG)}
+function good(b,w){const L0=lvf(G.xp)[0];combo++;G.xp+=Math.round(b*(1+Math.min(combo-1,5)*.2));G.corr++;if(combo>G.best)G.best=combo;if(w)rec(w,1);sv("ewt",G);if(lvf(G.xp)[0]>L0)toast("🎉 Level up! レベルアップ");hdr()}
+function bad(w){combo=0;if(w)rec(w,0);hdr()}
+
+/* WORD POOL (weights words you get wrong more often) */
+const pool=()=>{let a=W.filter(x=>ch=="0"||(ch=="m"?x.my:x.c==+ch));if(!a.length)a=W;const f=a.filter(x=>!PG.kn[x.w]);return f.length?f:a};
+const pick=a=>{const ws=a.map(x=>{const t=PG.st[x.w];return t?Math.max(.4,1+Math.min(3,t.w)-Math.min(t.s,8)*.25):2});let r=Math.random()*ws.reduce((p,q)=>p+q,0);for(let i=0;i<a.length;i++){r-=ws[i];if(r<=0)return a[i]}return a[0]};
+const chSel=()=>`<select id="ch">${[["0","All sets (全部)"],...Array.from({length:15},(_,i)=>[i+1,`Set ${i+1} (${i*10+1}–${i*10+10})`]),["m","My words (自分の単語)"]].map(o=>`<option value="${o[0]}" ${o[0]==ch?"selected":""}>${o[1]}</option>`).join("")}</select>`;
+const tb=d=>`<div class="sc"><span>${chSel()}</span>${d===0?"":`<button class="b" id="dr">${dir=="ej"?"English → 日本語":"日本語 → English"}</button>`}</div>`;
+const bind=f=>{$("ch").onchange=e=>{ch=e.target.value;f()};const d=$("dr");if(d)d.onclick=()=>{dir=dir=="ej"?"je":"ej";f()}};
+const knBtn=(w,f)=>{const b=$("kn");if(b)b.onclick=()=>{PG.kn[w.w]=1;sv("ewt_pg",PG);toast("✓ Removed from games (ゲームから外しました)");f()}};
+const KN=`<div class="row"><button class="b" id="kn">✓ I already know this (知ってる)</button></div>`;
+
+/* FLASHCARDS */
+function fc(){const w=pick(pool()),e=dir=="ej";
+ h(tb()+`<div class="big">${esc(e?w.w:w.jp)}</div><div id="bk" style="text-align:center;min-height:70px"></div><div class="row" id="rw"><button class="b" id="sa">Show answer (答えを見る)</button><button class="b" id="sp">🔊</button></div>`+KN);bind(fc);knBtn(w,fc);
+ $("sp").onclick=()=>say(w.w);
+ $("sa").onclick=()=>{$("bk").innerHTML=`<div class="q" style="margin:4px">${esc(e?w.jp:w.w)}</div>${w.s?`<div class="gm">${esc(w.s)}</div>`:""}`;$("rw").innerHTML=`<button class="b" id="y">✓ Got it (わかった)</button><button class="b" id="n">✗ Again (もう一度)</button><button class="b" id="sp">🔊</button>`;$("y").onclick=()=>{good(5,w.w);fc()};$("n").onclick=()=>{bad(w.w);fc()};$("sp").onclick=()=>say(w.w)}}
+
+/* QUIZ */
+function quiz(){const w=pick(pool()),e=dir=="ej",o=sh([w,...sh(W.filter(x=>x!=w&&(e?x.jp!=w.jp:x.w!=w.w))).slice(0,3)]);let done=0;
+ h(tb()+tbar()+`<div class="q">${esc(e?w.w:w.jp)} <button class="b" id="sp">🔊</button></div><div class="opts">${o.map((x,i)=>`<button class="b" data-i="${i}">${esc(e?x.jp:x.w)}</button>`).join("")}</div><div class="msg" id="m"></div>`+KN);bind(quiz);knBtn(w,quiz);
+ $("sp").onclick=()=>say(w.w);
+ const bs=[...document.querySelectorAll("[data-i]")];tstart(()=>bs[o.findIndex(x=>x!=w)].click());
+ bs.forEach(b=>b.onclick=()=>{if(done)return;done=1;tstop();const ok=o[+b.dataset.i]==w;b.classList.add(ok?"ok":"no");if(ok)good(10,w.w);else{bad(w.w);bs.forEach(c=>{if(o[+c.dataset.i]==w)c.classList.add("ok")})}$("m").textContent=w.w+" = "+w.jp;if(e||ok)say(w.w);later(quiz,ok?900:2000)})}
+
+/* HANGMAN */
+function hang(){const w=pick(pool()),t=w.w.toLowerCase(),L=c=>/[a-z]/.test(c);let g=[],m=0;
+ const won=()=>[...t].every(c=>!L(c)||g.includes(c));
+ const draw=()=>{const ok=won(),end=ok||m>=6;
+  h(tb(0)+`<div class="sc"><span>Mistakes (ミス): ${m}/6</span><button class="b" id="sp">🔊</button></div><div class="q" style="margin:6px">${esc(w.jp)}</div><div class="word">${[...t].map(c=>L(c)?(g.includes(c)||m>=6?c:"_"):c).join(" ")}</div><div class="keys">${[..."abcdefghijklmnopqrstuvwxyz"].map(c=>`<button class="b${g.includes(c)?(t.includes(c)?" ok":" no"):""}" data-k="${c}" ${g.includes(c)||end?"disabled":""}>${c}</button>`).join("")}</div><div class="msg">${ok?"🎉 Correct!":m>=6?"Answer: "+esc(w.w):""}</div>${end?`<div class="row"><button class="b" id="nx">Next (次へ)</button></div>`:""}`);bind(hang);
+  $("sp").onclick=()=>say(w.w);if($("nx"))$("nx").onclick=hang;
+  document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{const c=b.dataset.k;g.push(c);if(!t.includes(c)){m++;if(m>=6)bad(w.w)}else if(won()){good(15,w.w);say(w.w)}draw()})};
+ draw()}
+
+/* MEMORY */
+function mem(){const ws=sh(pool()).slice(0,6),cs=sh(ws.flatMap(w=>[{w,t:w.w,k:"e"},{w,t:w.jp,k:"j"}]));let sel=null,lock=0,left=ws.length,tries=0;
+ h(tb(0)+`<div class="sc"><span id="tr">Tries: 0</span><span>Match English with 日本語</span></div><div class="grid">${cs.map((c,i)=>`<button class="mc dn">${esc(c.t)}</button>`).join("")}</div><div class="msg" id="m"></div>`);bind(mem);
+ const bs=[...document.querySelectorAll(".mc")];
+ bs.forEach((b,i)=>b.onclick=()=>{if(lock||b.classList.contains("done")||sel===i||!b.classList.contains("dn"))return;b.classList.remove("dn");if(sel===null){sel=i;return}
+  const a=cs[sel],c=cs[i],pa=bs[sel];tries++;$("tr").textContent="Tries: "+tries;
+  if(a.w==c.w){pa.classList.add("done");b.classList.add("done");good(8,a.w.w);say(a.w.w);sel=null;if(!--left){$("m").textContent="🎉 All matched! (全部そろった)";later(mem,2000)}}
+  else{lock=1;bad(a.w.w);later(()=>{pa.classList.add("dn");b.classList.add("dn");sel=null;lock=0},900)}})}
+
+/* TYPING (日本語 → type the English) */
+function typ(){const w=pick(pool());let n=0;
+ h(tb(0)+tbar()+`<div class="q">${esc(w.jp)}</div><input id="in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type the English word (英語で入力)"><div class="row"><button class="b" id="ck">Check (確認)</button><button class="b" id="hn">Hint (ヒント)</button><button class="b" id="sp">🔊</button></div><div class="msg" id="m"></div>`+KN);bind(typ);knBtn(w,typ);
+ const i=$("in"),m=$("m");i.focus();tstart(()=>{n=3;m.style.color="var(--no)";m.textContent="Answer: "+w.w;bad(w.w);later(typ,2200)});
+ const ck=()=>{const v=i.value.trim().toLowerCase();if(!v)return;if(v==w.w.toLowerCase()){m.style.color="var(--ok)";tstop();m.textContent="✓ "+w.w;good(n?6:12,w.w);say(w.w);later(typ,1000)}else{n++;if(n==1)bad(w.w);m.style.color="var(--no)";if(n>2){tstop();m.textContent="Answer: "+w.w;later(typ,2200)}else m.textContent="Not quite — try again (もう一度)"}};
+ $("ck").onclick=ck;i.onkeydown=e=>{if(e.key=="Enter")ck()};
+ $("hn").onclick=()=>{m.style.color="var(--mut)";m.textContent=w.w[0]+" "+"_ ".repeat(w.w.length-1)+"("+w.w.length+" letters)"};
+ $("sp").onclick=()=>say(w.w)}
+
+/* MY WORDS */
+const addW=(w,jp,s)=>{w=(w||"").trim();jp=(jp||"").trim();s=(s||"").trim();if(!w||!jp)return 0;const o=MY.l.find(x=>x.w.toLowerCase()==w.toLowerCase());if(o){o.jp=jp;o.s=s}else MY.l.push({w,jp,s});return 1};
+const persist=()=>{sv("ewt_my",MY);rebuild()};
+function mine(){
+ h(`<div class="sc"><span>My words (自分の単語): ${MY.l.length}</span></div><div class="sc">Your words join every game under “My words” and “All sets”. 追加した単語はすべてのゲームで使えます。</div>
+ <input id="f0" placeholder="English word (英単語)"><input id="f1" placeholder="Japanese meaning (日本語の意味)"><input id="f2" placeholder="Example sentence, optional (例文)">
+ <div class="row" style="margin:0 0 12px"><button class="b" id="add">+ Add (追加)</button></div>
+ <textarea id="bulk" placeholder="Add many at once, one per line:&#10;word = 意味 = example sentence (optional)&#10;hesitate = ためらう"></textarea>
+ <div class="row" style="margin:0 0 6px"><button class="b" id="bk">Add list (まとめて追加)</button></div><div class="msg">${esc(mm)}</div>
+ <div>${MY.l.map((x,n)=>`<div class="it"><span><b>${esc(x.w)}</b> = ${esc(x.jp)}${x.s?" · "+esc(x.s):""}</span><button class="b" data-d="${n}">✕</button></div>`).join("")}</div>
+ <textarea id="bak" style="margin-top:12px" placeholder="Backup (バックアップ): tap Export, copy the text, then paste it here and tap Import on another device"></textarea>
+ <div class="row" style="margin-top:0"><button class="b" id="ex">Export</button><button class="b" id="im">Import</button></div>`);
+ $("add").onclick=()=>{const ok=addW($("f0").value,$("f1").value,$("f2").value);mm=ok?"✓ Added (追加しました)":"Fill in the English word and the Japanese meaning (英語と日本語を入力してください)";persist();mine()};
+ $("bk").onclick=()=>{let n=0;$("bulk").value.split("\n").forEach(l=>{const q=l.split("=");n+=addW(q[0],q[1],q.slice(2).join("="))});mm="✓ "+n+" added (追加しました)";persist();mine()};
+ app.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{MY.l.splice(+b.dataset.d,1);persist();mine()});
+ $("ex").onclick=()=>{const t=JSON.stringify({l:MY.l,pg:PG,g:G});$("bak").value=t;try{navigator.clipboard.writeText(t)}catch(e){}};
+ $("im").onclick=()=>{try{const o=JSON.parse($("bak").value);(o.l||[]).forEach(x=>{if(x&&x.w&&x.jp)addW(x.w,x.jp,x.s)});if(o.pg){Object.assign(PG.kn,o.pg.kn||{});for(const k in o.pg.st||{}){const a=PG.st[k],b=o.pg.st[k];if(!a||b.c+b.w>a.c+a.w)PG.st[k]=b}sv("ewt_pg",PG)}if(o.g&&o.g.xp>G.xp){G=Object.assign(G,o.g);sv("ewt",G);hdr()}mm="✓ Imported (読み込みました)"}catch(e){mm="Invalid backup (無効なバックアップ)"}persist();mine()}}
+
+/* PROGRESS */
+function prog(){const k=W.filter(x=>PG.kn[x.w]).length,pr=W.filter(x=>PG.st[x.w]).length,hard=W.filter(x=>PG.st[x.w]&&PG.st[x.w].w).sort((p,q)=>PG.st[q.w].w-PG.st[p.w].w).slice(0,10);
+ h(`<div class="sc"><span>Total words: ${W.length}</span><span>Practised: ${pr}</span><span>Known: ${k}</span></div><div class="bar"><i style="width:${k/W.length*100}%"></i></div><b>Trickiest words (苦手な単語)</b>${hard.length?hard.map(x=>`<div class="it"><span>${esc(x.w)} = ${esc(x.jp)}</span><span>✗${PG.st[x.w].w} ✓${PG.st[x.w].c}</span></div>`).join(""):`<div class="sc" style="margin-top:8px">Nothing yet — play a few rounds! (まずは遊んでみよう)</div>`}<div class="row"><button class="b" id="rk">Reset “known” words (リセット)</button></div>`);
+ $("rk").onclick=()=>{PG.kn={};sv("ewt_pg",PG);prog()}}
+
+/* TIMER + HELPERS */
+const TB=[0,20,12,8],TN=["Off","Relaxed","Normal","Fast"];let T=0,TM=0,cur="";try{T=+localStorage.getItem("ewt_t")||0}catch(e){}
+const tstop=()=>{clearInterval(TM);TM=0};
+const tbar=()=>TB[T]?`<div class="bar"><i id="tmr" style="width:100%;transition:none"></i></div>`:"";
+function tstart(cb){tstop();const s=TB[T];if(!s||!$("tmr"))return;const e=Date.now()+s*1000;TM=setInterval(()=>{const l=e-Date.now(),b=$("tmr");if(!b){tstop();return}b.style.width=Math.max(0,l/(s*10))+"%";if(l<=0){tstop();cb()}},100)}
+
+/* GENERIC 3-LIVES MULTIPLE CHOICE */
+const ES={};
+function endl(k,gen,fresh){const s=ES[k]=(fresh||!ES[k])?{p:0,l:3}:ES[k];
+ if(s.l<=0){h(`<div class="big">💀</div><div class="msg">Game over (ゲームオーバー) — score ${s.p}</div><div class="row"><button class="b" id="rs">Play again (もう一度)</button></div>`);$("rs").onclick=()=>endl(k,gen,1);return}
+ const q=gen();let done=0;
+ h(`<div class="sc"><span>Score ${s.p}</span><span>${"❤️".repeat(s.l)}</span></div>${tbar()}<div class="q">${q.q}</div><div class="gm">${esc(q.sub)}</div><div class="opts" style="margin-top:12px">${q.o.map((x,i)=>`<button class="b" data-i="${i}">${esc(x)}</button>`).join("")}</div><div class="msg" id="m"></div>`);
+ const bs=[...document.querySelectorAll("[data-i]")],fin=i=>{if(done)return;done=1;tstop();const ok=i>=0&&q.o[i]==q.a;if(i>=0)bs[i].classList.add(ok?"ok":"no");bs.forEach(b=>{if(q.o[+b.dataset.i]==q.a)b.classList.add("ok")});if(ok){s.p++;good(10,q.key)}else{s.l--;bad(q.key)}$("m").textContent=q.fb;later(()=>endl(k,gen),ok?800:1900)};
+ bs.forEach(b=>b.onclick=()=>fin(+b.dataset.i));tstart(()=>fin(-1))}
+
+/* PREPOSITIONS */
+const PR=`depend|on|頼る;rely|on|頼りにする;listen|to|聞く;wait|for|待つ;look|at|見る;look|for|探す;think|about|考える;worry|about|心配する;agree|with|同意する;belong|to|属する;believe|in|信じる;laugh|at|笑う;talk|about|話す;ask|for|頼む;apologise|for|謝る;pay|for|支払う;complain|about|不平を言う;succeed|in|成功する;concentrate|on|集中する;borrow|from|借りる;suffer|from|苦しむ;insist|on|主張する;dream|of|夢見る;hope|for|望む;apply|for|応募する;be afraid|of|恐れる;be good|at|得意だ;be interested|in|興味がある;be proud|of|誇りに思う;be tired|of|飽きている;be famous|for|有名だ`.split(";").map(x=>x.split("|"));
+const PS=["on","in","at","for","to","of","about","with","from"];
+const genP=()=>{const x=PR[Math.random()*PR.length|0];return{q:esc(x[0])+" ＿＿＿",sub:x[2],o:sh([x[1],...sh(PS.filter(p=>p!=x[1])).slice(0,3)]),a:x[1],key:"p:"+x[0]+" "+x[1],fb:x[0]+" "+x[1]}};
+
+/* IDIOMS */
+const ID=`break the ice|緊張をほぐす;a piece of cake|朝飯前;under the weather|体調が悪い;once in a blue moon|ごくまれに;hit the books|猛勉強する;cost an arm and a leg|とても高い;call it a day|今日はここまでにする;spill the beans|秘密を漏らす;in the same boat|同じ境遇にいる;get cold feet|怖気づく;the ball is in your court|次はあなたの番;bite the bullet|我慢して行う;better late than never|遅くてもやらないよりまし;kill two birds with one stone|一石二鳥;raining cats and dogs|土砂降り;hang in there|頑張って耐える;on the same page|認識が一致している;sit on the fence|どっちつかずでいる;time flies|時間があっという間に過ぎる;break a leg|頑張ってね`.split(";").map(x=>x.split("|"));
+const genI=()=>{const x=ID[Math.random()*ID.length|0];return{q:esc(x[0]),sub:"What does it mean? (意味は？)",o:sh([x[1],...sh(ID.filter(y=>y!=x)).slice(0,3).map(y=>y[1])]),a:x[1],key:"i:"+x[0],fb:x[0]+" = "+x[1]}};
+
+/* IRREGULAR VERBS */
+const IRR=`be|was/were|been|いる;begin|began|begun|始める;break|broke|broken|壊す;bring|brought|brought|持ってくる;buy|bought|bought|買う;catch|caught|caught|捕まえる;choose|chose|chosen|選ぶ;come|came|come|来る;do|did|done|する;drink|drank|drunk|飲む;drive|drove|driven|運転する;eat|ate|eaten|食べる;fall|fell|fallen|落ちる;feel|felt|felt|感じる;find|found|found|見つける;fly|flew|flown|飛ぶ;forget|forgot|forgotten|忘れる;get|got|got|得る;give|gave|given|与える;go|went|gone|行く;have|had|had|持つ;hear|heard|heard|聞こえる;know|knew|known|知っている;leave|left|left|去る;lose|lost|lost|失う;make|made|made|作る;meet|met|met|会う;pay|paid|paid|払う;read|read|read|読む;run|ran|run|走る;say|said|said|言う;see|saw|seen|見る;sell|sold|sold|売る;send|sent|sent|送る;sit|sat|sat|座る;sleep|slept|slept|眠る;speak|spoke|spoken|話す;spend|spent|spent|費やす;swim|swam|swum|泳ぐ;take|took|taken|取る;teach|taught|taught|教える;tell|told|told|伝える;think|thought|thought|考える;wear|wore|worn|着る;write|wrote|written|書く`.split(";").map(x=>x.split("|"));
+function ver(){const x=IRR[Math.random()*IRR.length|0];let d=0;
+ h(`<div class="sc"><span>Irregular verbs (不規則動詞)</span></div><div class="big" style="margin:12px 0 4px">${esc(x[0])}</div><div class="gm" style="margin-bottom:10px">${esc(x[3])}</div><input id="a1" placeholder="Past simple (過去形)" autocomplete="off" autocapitalize="off"><input id="a2" placeholder="Past participle (過去分詞)" autocomplete="off" autocapitalize="off"><div class="row"><button class="b" id="ck">Check (確認)</button></div><div class="msg" id="m"></div>`);
+ $("a1").focus();const ok=(i,a)=>a.split("/").includes(i.trim().toLowerCase()),m=$("m");
+ const ck=()=>{if(d)return;d=1;const y=ok($("a1").value,x[1])&&ok($("a2").value,x[2]);m.style.color=y?"var(--ok)":"var(--no)";m.textContent=(y?"✓ ":"✗ ")+x[0]+" – "+x[1]+" – "+x[2];if(y)good(15,"r:"+x[0]);else bad("r:"+x[0]);later(ver,y?1200:2600)};
+ $("ck").onclick=ck;$("a2").onkeydown=e=>{if(e.key=="Enter")ck()}}
+
+/* SENTENCES */
+const SV=`I want to buy a new bag.|新しいかばんを買いたい。
+She arrived at the airport early.|彼女は早く空港に着いた。
+Could you explain this problem again?|この問題をもう一度説明してくれますか。
+We usually have dinner at seven.|私たちはたいてい7時に夕食を食べる。
+He forgot his wallet at home.|彼は財布を家に忘れた。
+The weather was awful yesterday.|昨日は天気がひどかった。
+I am worried about the test.|テストが心配だ。
+Please wait for me outside.|外で待っていてください。
+They invited us to their party.|彼らは私たちをパーティーに招待した。
+This restaurant is cheap and delicious.|このレストランは安くておいしい。
+My neighbour is very friendly.|隣人はとても親しみやすい。
+I decided to travel in the summer.|夏に旅行することにした。
+The shop was crowded during the holiday.|休日の間、店は混んでいた。
+Can I borrow your map?|あなたの地図を借りてもいいですか。
+He suddenly stopped at the bridge.|彼は橋で突然止まった。
+I hope you enjoy your journey.|旅を楽しんでください。
+We need to repair the kitchen ceiling.|台所の天井を修理する必要がある。
+The manager offered me a discount.|管理者は私に割引を申し出た。
+I have already paid the receipt.|もう領収書の分は払った。
+Maybe we should take a break.|たぶん休憩したほうがいい。`.split("\n").map(x=>x.split("|"));
+function scr(){const SS=[...SV,...MY.l.filter(x=>x.s&&x.s.includes(" ")).map(x=>[x.s,x.jp])],x=SS[Math.random()*SS.length|0],tl=sh(x[0].split(" ").map(t=>({t})));let an=[];
+ const draw=()=>{h(`<div class="sc"><span>Put the words in order (並べ替え)</span><button class="b" id="sp">🔊</button></div><div class="q" style="font-size:18px">${esc(x[1])}</div><div class="zone">${an.map((t,k)=>`<button class="b t" data-a="${k}">${esc(t.t)}</button>`).join("")}</div><div class="row">${tl.map((t,j)=>an.includes(t)?"":`<button class="b t" data-t="${j}">${esc(t.t)}</button>`).join("")}</div><div class="row"><button class="b" id="ck">Check (確認)</button><button class="b" id="nx">Skip (スキップ)</button></div><div class="msg" id="m"></div>`);
+  $("sp").onclick=()=>say(x[0]);$("nx").onclick=scr;
+  app.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{an.push(tl[+b.dataset.t]);draw()});
+  app.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{an.splice(+b.dataset.a,1);draw()});
+  $("ck").onclick=()=>{if(an.map(t=>t.t).join(" ")==x[0]){good(15,"s:"+x[0]);say(x[0]);$("m").style.color="var(--ok)";$("m").textContent="✓ Correct!";later(scr,1500)}else{bad("s:"+x[0]);$("m").style.color="var(--no)";$("m").textContent="Not quite (もう一度)"}}};
+ draw()}
+
+/* CROSSWORD */
+function xgen(ws){const N=15,g=Array.from({length:N},()=>Array(N).fill("")),D=Array.from({length:N},()=>Array(N).fill(-1)),pl=[];
+ const at=(r,c)=>r<0||c<0||r>=N||c>=N?"":g[r][c];
+ const fit=(t,r,c,v)=>{const dr=v,dc=1-v,n=t.length;if(r<0||c<0||r+dr*(n-1)>=N||c+dc*(n-1)>=N||at(r-dr,c-dc)||at(r+dr*n,c+dc*n))return 0;let x=0;
+  for(let i=0;i<n;i++){const a=r+dr*i,b=c+dc*i;if(g[a][b]){if(g[a][b]!=t[i]||D[a][b]==v)return 0;x++}else if(at(a+dc,b+dr)||at(a-dc,b-dr))return 0}return x};
+ const put=(x,r,c,v)=>{for(let i=0;i<x.w.length;i++){g[r+v*i][c+(1-v)*i]=x.w[i];D[r+v*i][c+(1-v)*i]=v}pl.push({...x,r,c,v})};
+ ws.forEach((x,k)=>{if(!k){put(x,N>>1,(N-x.w.length)>>1,0);return}const o=[];for(let v=0;v<2;v++)for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(fit(x.w,r,c,v))o.push([r,c,v]);if(o.length){const b=o[Math.random()*o.length|0];put(x,...b)}});
+ return{g,pl,N}}
+function xw(){const ws=sh(pool().filter(x=>/^[a-z]{3,9}$/i.test(x.w))).slice(0,10).sort((a,b)=>b.w.length-a.w.length).map(x=>({w:x.w.toLowerCase(),jp:x.jp}));
+ if(ws.length<3){h(tb(0)+`<div class="msg">Not enough single words in this set (単語が足りません)</div>`);bind(xw);return}
+ let best;for(let i=0;i<8;i++){const r=xgen(ws);if(!best||r.pl.length>best.pl.length)best=r}
+ const{g,pl,N}=best;let r0=N,r1=0,c0=N,c1=0;pl.forEach(p=>{r0=Math.min(r0,p.r);c0=Math.min(c0,p.c);r1=Math.max(r1,p.r+p.v*(p.w.length-1));c1=Math.max(c1,p.c+(1-p.v)*(p.w.length-1))});
+ const cw=c1-c0+1,num={};let n=0;[...pl].sort((a,b)=>a.r-b.r||a.c-b.c).forEach(p=>{const k=p.r+","+p.c;if(!num[k])num[k]=++n;p.n=num[k]});
+ let cells="";for(let r=r0;r<=r1;r++)for(let c=c0;c<=c1;c++)cells+=g[r][c]?`<div class="xc"><i>${num[r+","+c]||""}</i><input maxlength="1" data-r="${r}" data-c="${c}" autocomplete="off" autocapitalize="off"></div>`:`<div class="xe"></div>`;
+ const cl=(t,v)=>`<b>${t}</b>`+pl.filter(p=>p.v==v).sort((a,b)=>a.n-b.n).map(p=>`<div class="it"><span>${p.n}. ${esc(p.jp)}</span><span>${p.w.length}</span></div>`).join("");
+ h(tb(0)+`<div class="xg" style="width:min(100%,${cw*44}px);grid-template-columns:repeat(${cw},minmax(0,1fr))">${cells}</div><div class="msg" id="m"></div><div class="row" style="margin:0 0 10px"><button class="b" id="ck">Check (確認)</button><button class="b" id="rv">Reveal (答え)</button><button class="b" id="nw">New (新しい問題)</button></div>${cl("Across → (横)",0)}<div style="height:8px"></div>${cl("Down ↓ (縦)",1)}`);bind(xw);
+ const ins=[...app.querySelectorAll(".xc input")],gi=(r,c)=>ins.find(i=>+i.dataset.r==r&&+i.dataset.c==c),dn={};
+ ins.forEach(i=>i.oninput=()=>{i.value=i.value.slice(-1).toLowerCase();if(i.value){const r=+i.dataset.r,c=+i.dataset.c,nx=gi(r,c+1)||gi(r+1,c);if(nx)nx.focus()}});
+ $("ck").onclick=()=>{let all=1;ins.forEach(i=>i.className="");pl.forEach(p=>{let ok=1;for(let k=0;k<p.w.length;k++){const i=gi(p.r+p.v*k,p.c+(1-p.v)*k);if(i.value!=p.w[k]){ok=0;if(i.value)i.className="bad"}}if(ok){if(!dn[p.w]){dn[p.w]=1;good(10,p.w)}}else all=0});
+  $("m").textContent=all?"🎉 Solved! (完成)":"";if(all)later(xw,2500)};
+ $("rv").onclick=()=>pl.forEach(p=>{for(let k=0;k<p.w.length;k++)gi(p.r+p.v*k,p.c+(1-p.v)*k).value=p.w[k]});
+ $("nw").onclick=xw}
+
+/* WORD RAIN (falling 日本語 → type the English) */
+function wr(){let ws=[],sc=0,lv=5,sp=0,over=0,ms=[];const H=320,lvl=()=>sc/5|0;
+ h(`<div class="sc"><span id="s1"></span><span id="s2"></span></div><div class="ar" id="ar"><div class="ov" id="ov"><div class="big" style="margin:0">🌧️</div><div>Type the English for each falling 日本語<br>落ちてくる日本語を英語で入力</div><button class="b" id="st">Start (スタート)</button></div></div><input id="ri" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="English… (英語)" style="margin-top:8px"><div id="rm"></div>`);
+ const ar=$("ar"),ri=$("ri"),up=()=>{$("s1").textContent=`Score ${sc} · Record ${G.wb||0}`;$("s2").textContent="❤️ "+lv};up();
+ const spawn=()=>{const w=pick(pool().filter(x=>!ws.some(y=>y.w==x)));if(!w)return;const el=document.createElement("div");el.className="fw";el.textContent=w.jp;ar.appendChild(el);el.style.left=Math.random()*Math.max(0,ar.clientWidth-el.offsetWidth)+"px";el.style.top="0px";ws.push({w,el,y:0})};
+ const end=()=>{over=1;tstop();if(sc>(G.wb||0)){G.wb=sc;sv("ewt",G)}up();ar.insertAdjacentHTML("beforeend",`<div class="ov"><div class="big" style="margin:0">💀</div><b>Game over (ゲームオーバー)</b><div>Score ${sc}</div><button class="b" id="rn">Play again (もう一度)</button></div>`);$("rn").onclick=wr;$("rm").innerHTML=ms.length?`<div class="sc" style="margin-top:8px">Missed (間違えた単語):</div>`+ms.map(m=>`<div class="it"><span>${esc(m.w)}</span><span>${esc(m.jp)}</span></div>`).join(""):""};
+ const miss=x=>{ws.splice(ws.indexOf(x),1);x.el.remove();ms.push(x.w);bad(x.w.w);lv--;up();if(lv<=0)end()};
+ const tick=()=>{if(over)return;sp+=50;if(sp>=Math.max(1300,4200-lvl()*200)){sp=0;spawn()}const dy=H/(Math.max(4,10-lvl()*.7)*20);[...ws].forEach(x=>{x.y+=dy;x.el.style.top=x.y+"px";if(x.y>=H-30&&!over)miss(x)})};
+ ri.oninput=()=>{if(over)return;const v=ri.value.trim().toLowerCase(),m=ws.find(x=>x.w.w.toLowerCase()==v);if(m&&v){ws.splice(ws.indexOf(m),1);m.el.remove();sc++;good(8,m.w.w);ri.value="";say(m.w.w);up()}};
+ $("st").onclick=()=>{$("ov").remove();spawn();TM=setInterval(tick,50);ri.focus()}}
+
+/* NAV */
+const games={"📇 Flashcards (フラッシュカード)":fc,"❓ Quiz (クイズ)":quiz,"🔤 Hangman (ハングマン)":hang,"🃏 Memory (神経衰弱)":mem,"⌨️ Typing (タイピング)":typ,"🔗 Prepositions (前置詞)":()=>endl("p",genP,1),"🧩 Sentences (文の並べ替え)":scr,"💬 Idioms (イディオム)":()=>endl("i",genI,1),"⏪ Irregular verbs (不規則動詞)":ver,"✚ Crossword (クロスワード)":xw,"🌧️ Word Rain (ワードレイン)":wr,"➕ My words (自分の単語)":mine,"📊 Progress (進捗)":prog};
+const gs=document.createElement("select");gs.id="gs";Object.keys(games).forEach(k=>{const o=document.createElement("option");o.textContent=k;gs.appendChild(o)});
+const go=k=>{RUN++;tstop();cur=k;gs.value=k;games[k]()};gs.onchange=()=>go(gs.value);
+const tbn=document.createElement("button");tbn.className="b";const tl=()=>tbn.textContent="⏱ "+TN[T];tl();tbn.onclick=()=>{T=(T+1)%4;try{localStorage.setItem("ewt_t",T)}catch(e){}tl();go(cur)};
+$("nav").append(gs,tbn);rebuild();hdr();go(Object.keys(games)[0]);
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./sw.js", {
+      scope: "./"
+    }).then(function (registration) {
+      console.log("PWA service worker registered:", registration.scope);
+    }).catch(function (error) {
+      console.error("PWA service worker registration failed:", error);
+    });
+  });
+}
+</script>
+</body></html>
